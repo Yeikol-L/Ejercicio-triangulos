@@ -4,7 +4,7 @@
 #include <tchar.h>
 
 static TCHAR szWindowClass[] = _T("DesktopApp");
-static TCHAR szTitle[] = _T("Windows Desktop Guided Tour Application");
+static TCHAR szTitle[] = _T("Apliación tendencia de triángulo");
 
 
 static const int anchoTriangulo = 300;
@@ -47,7 +47,7 @@ int WINAPI WinMain(
     {
         MessageBox(NULL,
             _T("Llamada a RegisterClassEx fallida!"),
-            _T("Windows Desktop Guided Tour"),
+            _T("Apliación tendencia de triángulo"),
             NULL);
 
         return 1;
@@ -72,7 +72,7 @@ int WINAPI WinMain(
     {
         MessageBox(NULL,
             _T("Llamada a CreateWindow fallida!"),
-            _T("Windows Desktop Guided Tour"),
+            _T("Apliación tendencia de triángulo"),
             NULL);
 
         return 1;
@@ -107,14 +107,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     TCHAR greeting[] = _T("Hola, escritorio de Windows!");
     POINT puntoMedio = puntoExterior;
     COLORREF black = RGB(0, 0, 0);
-
+    COLORREF red = RGB(255, 0, 0);
+    COLORREF green = RGB(0, 255, 0);
+    COLORREF blue = RGB(0, 0, 255);
+    COLORREF currentColor;
     switch (message)
     {
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
-        SetPixel(hdc, punto1.x, punto1.y, black);
-        SetPixel(hdc, punto2.x, punto2.y, black);
-        SetPixel(hdc, punto3.x, punto3.y, black);
+        SetPixel(hdc, punto1.x, punto1.y, red);
+        SetPixel(hdc, punto2.x, punto2.y, green);
+        SetPixel(hdc, punto3.x, punto3.y, blue);
         SetPixel(hdc, puntoMedio.x, puntoMedio.y, black);
 
         for (int i = 0; i <= 10000; i++) {
@@ -123,17 +126,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             {
             case 1:
                 puntoMedio = PuntoMedio(punto1, puntoMedio);
+                currentColor = red;
                 break;
             case 2:
                 puntoMedio = PuntoMedio(punto2, puntoMedio);
+                currentColor = green;
                 break;
             case 3:
                 puntoMedio = PuntoMedio(punto3, puntoMedio);
+                currentColor = blue;
                 break;
             default:
                 break;
             }
-            SetPixel(hdc, puntoMedio.x, puntoMedio.y, black);
+            SetPixel(hdc, puntoMedio.x, puntoMedio.y, currentColor
+);
         }
 
         EndPaint(hWnd, &ps);
